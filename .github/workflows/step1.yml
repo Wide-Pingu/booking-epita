@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
     
       - name: Run OSV Scanner
-        uses: google/osv-scanner-action@v1
+        uses: google/osv-scanner-action@main
     
       - name: Upload SARIF report to Security Dashboard
         uses: github/codeql-action/upload-sarif@v2
