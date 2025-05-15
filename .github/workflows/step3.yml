@@ -46,7 +46,7 @@ jobs:
         continue-on-error: true
 
       - name: Compare base vs head analysis with OSV Reporter
-        uses: google/osv-scanner-action/osv-reporter-action@6ea71655c618c48ed4fdaf5b6e8b1a3ad9bbdd90
+        uses: google/osv-scanner-action/osv-reporter-action@main
         with:
           base-sarif-file: results-base.sarif
           head-sarif-file: results-head.sarif
