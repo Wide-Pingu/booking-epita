@@ -1,0 +1,64 @@
+name: PR Security Scan (OSV Differential)
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+on:
+  pull_request:
+    paths:
+      - 'app/**'  # scan only when changes affect this directory; adjust if needed
+    branches:
+      - main  # or your default branch
+
+jobs:
+  osv-diff-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2  # Needed to access base commit
+
+      - name: Run OSV Scanner on HEAD (PR branch)
+        uses: google/osv-scanner-action/osv-scanner-action@8dded7155905cd666190a12dc9997000e58d163d
+        with:
+          scan-args: |
+            --format sarif
+            --output results-head.sarif
+            ./app/
+        continue-on-error: true
+
+      - name: Checkout base branch (main)
+        run: |
+          git fetch origin main
+          git checkout origin/main
+
+      - name: Run OSV Scanner on BASE (main)
+        uses: google/osv-scanner-action/osv-scanner-action@8dded7155905cd666190a12dc9997000e58d163d
+        with:
+          scan-args: |
+            --format sarif
+            --output results-base.sarif
+            ./app/
+        continue-on-error: true
+
+      - name: Compare base vs head analysis with OSV Reporter
+        uses: google/osv-scanner-action/osv-reporter-action@6ea71655c618c48ed4fdaf5b6e8b1a3ad9bbdd90
+        with:
+          base-sarif-file: results-base.sarif
+          head-sarif-file: results-head.sarif
+          output-file: osv-diff.sarif
+
+      - name: Upload differential SARIF to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: osv-diff.sarif
+
+      - name: Save differential SARIF report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: osv-diff-report
+          path: osv-diff.sarif
