@@ -24,8 +24,8 @@ jobs:
         uses: google/osv-scanner-action/osv-scanner-action@8dded7155905cd666190a12dc9997000e58d163d
         with:
           scan-args: |-
-            --format sarif 
-            --output results.sarif 
+            --format sarif
+            --output results.sarif
             ./app/
     
       - name: Upload SARIF report to Security Dashboard
