@@ -26,8 +26,8 @@ jobs:
         uses: google/osv-scanner-action/osv-scanner-action@main
         with:
           scan-args: |
-            --format sarif
-            --output results-head.sarif
+            --format json
+            --output results-new.json
             ./app/
         continue-on-error: true
 
@@ -40,14 +40,19 @@ jobs:
         uses: google/osv-scanner-action/osv-scanner-action@main
         with:
           scan-args: |
-            --format sarif
-            --output results-base.sarif
+            --format json
+            --output results-old.json
             ./app/
         continue-on-error: true
 
       - name: Compare base vs head analysis with OSV Reporter
         uses: google/osv-scanner-action/osv-reporter-action@main
         with:
+          scan-args: |
+            --format json
+            --new results-new.json
+            --old results-old.json
+            --output osv-diff.sarif
           base-sarif-file: results-base.sarif
           head-sarif-file: results-head.sarif
           output-file: osv-diff.sarif
