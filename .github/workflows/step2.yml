@@ -1,5 +1,10 @@
 name: Semgrep Java Scan
 
+permissions:
+  security-events: write
+  actions: read
+  contents: read
+
 on:
   schedule:
     - cron: '0 2 * * *'  # Runs daily at 2 AM UTC
