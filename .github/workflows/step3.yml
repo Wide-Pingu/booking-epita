@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 2  # Needed to access base commit
 
       - name: Run OSV Scanner on HEAD (PR branch)
-        uses: google/osv-scanner-action/osv-scanner-action@8dded7155905cd666190a12dc9997000e58d163d
+        uses: google/osv-scanner-action/osv-scanner-action@main
         with:
           scan-args: |
             --format sarif
@@ -37,7 +37,7 @@ jobs:
           git checkout origin/main
 
       - name: Run OSV Scanner on BASE (main)
-        uses: google/osv-scanner-action/osv-scanner-action@8dded7155905cd666190a12dc9997000e58d163d
+        uses: google/osv-scanner-action/osv-scanner-action@main
         with:
           scan-args: |
             --format sarif
