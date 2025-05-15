@@ -53,9 +53,6 @@ jobs:
             --new results-new.json
             --old results-old.json
             --output osv-diff.sarif
-          base-sarif-file: results-base.sarif
-          head-sarif-file: results-head.sarif
-          output-file: osv-diff.sarif
 
       - name: Upload differential SARIF to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
