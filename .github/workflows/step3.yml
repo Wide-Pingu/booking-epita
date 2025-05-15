@@ -48,7 +48,7 @@ jobs:
       - name: Compare base vs head analysis with OSV Reporter
         uses: google/osv-scanner-action/osv-reporter-action@main
         with:
-          scan-args: |
+          args: |
             --format json
             --new results-new.json
             --old results-old.json
